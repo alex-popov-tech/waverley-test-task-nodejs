@@ -29,7 +29,6 @@ const addTemplatesEngine = (app) => {
     includeViewExtension: true,
     root: path.join(__dirname, 'views'),
     defaultContext: {
-      _,
       route: (name, args, options) => app.reverse(name, args, options),
     },
   });
