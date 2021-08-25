@@ -1,11 +1,11 @@
-# Hexlet project lvl 4
+# waverley-test-task-nodejs
 
 ## [Live](https://waverley-test-task-nodejs.herokuapp.com/)
 
-### Build, linter, tests stasus
+### Build and linter
 [![Actions Status](https://github.com/alex-popov-tech/waverley-test-task-nodejs/workflows/nodejs/badge.svg)](https://github.com/alex-popov-tech/backend-project-lvl4/actions)
 ### Codeclimate
-[![Maintainability](https://api.codeclimate.com/v1/badges/b9efb9f741b64a32d3ce/maintainability)](https://codeclimate.com/github/alex-popov-tech/backend-project-lvl4/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/44b39f3bc3d496604aa5/maintainability)](https://codeclimate.com/github/alex-popov-tech/waverley-test-task-nodejs/maintainability)
 
 ## How to install
 
