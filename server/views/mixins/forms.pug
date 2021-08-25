@@ -1,0 +1,7 @@
+mixin formFor()
+  form&attributes(attributes)
+    block
+
+mixin submit()
+  .form-group
+    input(class='btn btn-primary' type='submit')&attributes(attributes)

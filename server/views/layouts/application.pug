@@ -1,0 +1,12 @@
+include ../mixins/forms.pug
+
+doctype html
+html(lang="en").h-100
+  head
+    title="Test Task Node JS"
+    script(src='/assets/main.js')
+  body.d-flex.flex-column.min-vh-100
+    .container
+      h1.my-4
+        block header
+      block content

@@ -1,0 +1,36 @@
+extends ./layouts/application.pug
+
+block content
+
+  table.table.table-striped
+    thead
+      tr
+        th= "ID"
+        th= "Name"
+        th= "Delay"
+        th
+    tbody
+      each task in data.tasks
+        tr
+          td= task.id
+          td= task.name
+          td= task.delayInMs / 1000
+          td
+            +formFor()(action=`${route('patchTask', { id: task.id })}?_method=patch` method='post')
+              +submit()(value="Run")
+
+  a.btn.btn-primary(href=`${route('tasks')}?running=true`)="Status"
+  table.table.table-striped
+    thead
+      tr
+        th= "ID"
+        th= "Name"
+        th= "Time to finish"
+    tbody
+      each task in data.runningTasks
+        - finishTime = task.delayInMs + task.startedAt
+        - secondsUntilFinish = ((finishTime - Date.now()) / 1000).toFixed(0)
+        tr
+          td= task.id
+          td= task.name
+          td= secondsUntilFinish
