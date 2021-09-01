@@ -10,7 +10,7 @@ start:
 	npm run start
 
 dev:
-	npx nodemon --exec npx babel-node server/bin/index.js
+	npx nodemon -e ts -w server -x 'NODE_ENV=development npm run build-backend && node dist/server/bin/index.js'
 
 lint:
 	npx eslint .
