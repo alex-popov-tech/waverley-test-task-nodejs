@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+
 dotenv.config();
 // import { config as dotenvConfig } from 'dotenv';
 // dotenvConfig();
@@ -23,6 +24,6 @@ const configs = {
   },
 };
 
-console.log(mode, configs[mode])
+console.log(mode, configs[mode]);
 module.exports = configs[mode];
 // export default configs[mode];
