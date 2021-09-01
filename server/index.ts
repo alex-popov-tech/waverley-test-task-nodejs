@@ -46,12 +46,12 @@ const addAssets = (app) => {
       config: `${__dirname}/../webpack.config.js`,
     });
   }
-  // if (isProduction) {
-  //   app.register(fastifyStatic, {
-  //     root: `${__dirname}/../assets`,
-  //     prefix: '/assets',
-  //   });
-  // }
+  if (isProduction) {
+    app.register(fastifyStatic, {
+      root: `${__dirname}/../assets`,
+      prefix: '/assets',
+    });
+  }
 };
 const addPlugins = (app) => {
   app.register(fastifySensible);
