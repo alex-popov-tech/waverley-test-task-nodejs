@@ -20,6 +20,9 @@ const configs = {
   production: {
     ...common,
     type: 'postgres',
+    ssl: {
+      rejectUnauthorized: false,
+    },
     url: process.env.DATABASE_URL,
   },
 };
