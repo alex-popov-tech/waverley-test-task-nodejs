@@ -26,4 +26,5 @@ const configs = {
   },
 };
 
+console.log(configs[mode])
 export default configs[mode];
