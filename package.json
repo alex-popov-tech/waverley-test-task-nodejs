@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "del dist",
     "build-frontend": "NODE_ENV=production webpack -p",
-    "build-backend": "tsc && cp -r server/views dist/server/views",
+    "build-backend": "NODE_ENV=production tsc && cp -r server/views dist/server/views && ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run",
     "build": "npm run clean && npm run build-frontend && npm run build-backend && npm run preparation",
     "preparation": "mkdir -p dist/server; cp -n .env.example .env; cp -r server/views dist/server/views;",
     "start": "NODE_ENV=production node dist/server/bin/index.js"
