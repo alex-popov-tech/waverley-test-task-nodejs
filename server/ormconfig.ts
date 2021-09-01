@@ -1,5 +1,3 @@
-import { config as dotenvConfig } from 'dotenv';
-dotenvConfig();
 const mode = process.env.NODE_ENV || 'development';
 
 const common = {
