@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: '16.x'
       - name: Setup
-        run: make setup
+        run: npm ci
       - name: Lint
         run: make lint
