@@ -1,5 +1,4 @@
 import { config as dotenvConfig } from 'dotenv';
-dotenvConfig();
 import fastify from 'fastify';
 import fastifyFormbody from 'fastify-formbody';
 import fastifyMethodOverride from 'fastify-method-override-wrapper';
@@ -14,8 +13,9 @@ import path from 'path';
 import pointOfView from 'point-of-view';
 import pug from 'pug';
 import qs from 'qs';
-import ormConfig from './ormconfig';
+import ormConfig from '../ormconfig';
 import addRoutes from './routes';
+dotenvConfig();
 
 
 const mode = process.env.NODE_ENV || 'development';
