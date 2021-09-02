@@ -11,7 +11,7 @@
     "clean": "del dist",
     "build:frontend": "webpack -p",
     "build:backend:preparations": "cp -n .env.example .env; cp -r server/views dist/server/views; NODE_ENV=production typeorm migration:run;",
-    "build:backend": "NODE_ENV=production tsc && cp -r server/views dist/server/views",
+    "build:backend": "NODE_ENV=production tsc",
     "build": "npm run clean && npm run build:frontend && npm run build:backend && npm run build:backend:preparations",
     "start": "NODE_ENV=production node dist/server/bin/index.js"
   },

@@ -13,7 +13,6 @@ import path from 'path';
 import pointOfView from 'point-of-view';
 import pug from 'pug';
 import qs from 'qs';
-import ormConfig from '../ormconfig';
 import addRoutes from './routes';
 dotenvConfig();
 
@@ -60,7 +59,7 @@ const addPlugins = (app) => {
   app.register(fastifyReverseRoutes);
 };
 const addDatabase = (app) => {
-  app.register(fastifyTypeOrm, ormConfig);
+  app.register(fastifyTypeOrm, {});
 };
 const createLoggedApp = () => {
   const app = fastifyMethodOverride(fastify)({
