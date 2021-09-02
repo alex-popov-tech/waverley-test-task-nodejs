@@ -10,7 +10,7 @@ start:
 	npm run start
 
 dev:
-	npx nodemon -e ts -w server -x 'NODE_ENV=development npm run build-backend && node dist/server/bin/index.js'
+	npx nodemon -e ts,pug -w server -x 'cp -r server/views dist/server/views; npx ts-node server/bin/index.ts'
 
 lint:
 	npx eslint .

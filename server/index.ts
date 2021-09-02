@@ -59,7 +59,9 @@ const addPlugins = (app) => {
   app.register(fastifyReverseRoutes);
 };
 const addDatabase = (app) => {
-  app.register(fastifyTypeOrm, {});
+  process.env.TYPEORM_ENTITIES = path.resolve(__dirname, `entities/*.${isProduction ? 'js' : 'ts'}`);
+  process.env.TYPEORM_MIGRATIONS = path.resolve(__dirname, `migrations/*.${isProduction ? 'js' : 'ts'}`);
+  app.register(fastifyTypeOrm);
 };
 const createLoggedApp = () => {
   const app = fastifyMethodOverride(fastify)({
