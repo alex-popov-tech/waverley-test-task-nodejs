@@ -1,0 +1,19 @@
+extends ./layouts/application.pug
+
+block content
+
+  +formFor()(id='newTask' action='/' method='post')
+    .input-group.mb-3
+      input(class="form-control" type="text" name="name" placeholder="New task name...")
+  table.table.table-striped
+    thead
+      tr
+        th= "Name"
+        th
+    tbody
+      each task in data.tasks
+        tr
+          td
+            input(style='border:none; outline:none; background-color:inherit;' type='text' readonly value=`${task.name}` data-id=`${task.id}`)
+          td
+            input(class='btn btn-danger' value="Delete" type='button' data-id=`${task.id}`)

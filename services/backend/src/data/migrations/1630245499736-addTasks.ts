@@ -8,13 +8,19 @@ export class addTasks1630245499736 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
-            isPrimary: true
+            type: 'integer', // instead of 'int', required for the increment strategy
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment' // thought this was the default
           }, {
             name: 'name',
             type: 'varchar'
           }, {
             name: 'created_at',
+            type: 'timestamp',
+            default: 'now()'
+          }, {
+            name: 'updated_at',
             type: 'timestamp',
             default: 'now()'
           }
