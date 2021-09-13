@@ -19,3 +19,22 @@
 
   `make dev`
 
+## Which graphql api requests are supported
+
+```graphql
+    type Task {
+      id: Int
+      name: String
+    }
+
+    type Query {
+      task(id: ID!): Task
+      tasks: [Task]
+    }
+
+    type Mutation {
+      addTask(name: String!): Task
+      updateTask(id: ID!, name: String!): Task
+      deleteTask(id: ID!): DeletionPayload
+    }
+```
