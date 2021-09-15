@@ -1,5 +1,5 @@
-import { Length } from 'class-validator';
-import { Column, UpdateDateColumn, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Length, validateOrReject } from 'class-validator';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('tasks')
 export class Task {
@@ -15,4 +15,12 @@ export class Task {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  async init({ name }): Promise<Task> {
+    const task = new Task();
+    task.name = name;
+
+    return validateOrReject(task)
+    .then(() => task);
+  }
 }

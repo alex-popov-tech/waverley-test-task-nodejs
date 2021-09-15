@@ -1,57 +1,36 @@
-import { ApolloServerPluginDrainHttpServer, gql } from 'apollo-server-core';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-fastify';
+import { FastifyInstance } from 'fastify';
+import { GraphQLSchema as GQLSchema } from 'graphql';
+import { createMutation } from './mutation';
+import { createQuery } from './query';
+const myPlugin = {
+  // Fires whenever a GraphQL request is received from a client.
+  async requestDidStart(requestContext) {
+    console.log('Request started! Query:\n' +
+      requestContext.request.query);
+    console.log(JSON.stringify(requestContext, null, '\t'))
 
-export const addGraphql = (app) => {
-  const typeDefs = gql`
-
-    type DeletionPayload {
-      success: Boolean
-    }
-
-    type Task {
-      id: Int
-      name: String
-    }
-
-    type Query {
-      task(id: ID!): Task
-      tasks: [Task]
-    }
-
-    type Mutation {
-      addTask(name: String!): Task
-      updateTask(id: ID!, name: String!): Task
-      deleteTask(id: ID!): DeletionPayload
-    }
-
-  `;
-  const resolvers = {
-    Query: {
-      task: (_, { id }) => app.rp.tasks().findOne({ where: { id } }),
-      tasks: () => app.rp.tasks().find(),
-    },
-    Mutation: {
-      addTask: async (_, { name }) => {
-        const task = app.rp.tasks().create();
-        task.name = name;
-        await app.rp.tasks().save(task);
-        return task;
+    return {
+      // Fires whenever Apollo Server will parse a GraphQL
+      // request to create its associated document AST.
+      async parsingDidStart(requestContext) {
+        console.log('Parsing started!');
       },
 
-      updateTask: async (_, { id, name }) => {
-        const task = await app.rp.tasks().findOne({ where: { id } });
-        task.name = name;
-        await app.rp.tasks().save(task);
-        return task;
+      // Fires whenever Apollo Server will validate a
+      // request's document AST against your GraphQL schema.
+      async validationDidStart(requestContext) {
+        console.log('Validation started!');
       },
 
-      deleteTask: async (_, { id }) => {
-        await app.rp.tasks().delete(id);
-        return { success: true };
-      }
-      ,
-    },
-  };
+    }
+  },
+};
+export const addGraphql = (app: FastifyInstance) => {
+  const query = createQuery(app);
+  const mutation = createMutation(app);
+  const schema = new GQLSchema({ query, mutation});
   const fastifyAppClosePlugin = ({
     async serverWillStart() {
       return {
@@ -62,9 +41,9 @@ export const addGraphql = (app) => {
     },
   });
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     plugins: [
+      myPlugin,
       fastifyAppClosePlugin,
       ApolloServerPluginDrainHttpServer({ httpServer: app.server }),
     ],
