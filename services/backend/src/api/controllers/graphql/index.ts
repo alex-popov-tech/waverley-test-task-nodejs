@@ -1,26 +1,14 @@
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-fastify';
-import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { createMutation, createQuery } from './task';
+import { GraphQLSchema } from 'graphql';
+import { createQuery } from './query';
+import { createMutation } from './mutation';
 
 export const addGraphql = (app) => {
-  const tasksQueries = createQuery(app);
-  const query = new GraphQLObjectType({
-    name: 'Query',
-    fields: {
-      tasks: tasksQueries,
-    },
-  });
-
-  const tasksMutations = createMutation(app);
-  const mutation = new GraphQLObjectType({
-    name: 'Mutation',
-    fields: {
-      tasks: tasksMutations,
-    },
-  });
-
+  const query = createQuery(app);
+  const mutation = createMutation(app);
   const schema = new GraphQLSchema({ query, mutation });
+
   const fastifyAppClosePlugin = ({
     async serverWillStart() {
       return {
