@@ -16,7 +16,7 @@ export class Task {
   @UpdateDateColumn()
   updated_at: Date
 
-  async init({ name }): Promise<Task> {
+  async from({ name }): Promise<Task> {
     const task = new Task();
     task.name = name;
 

@@ -12,18 +12,36 @@ const sendGraphql = ({ query }) => fetch('/graphql', {
     return result;
   });
 
-const addTask = ({ name }) => sendGraphql({ query: `mutation { addTask(name: "${name}") { id name } }` });
-const updateTask = ({ id, name }) => sendGraphql({ query: `mutation { updateTask(id: ${id}, name: "${name}") { id name } }` });
-const deleteTask = ({ id }) => sendGraphql({ query: `mutation { deleteTask(id: ${id}) { success } }` });
+const addTask = ({ name }) => sendGraphql({ query: `mutation { tasks { add(name: "${name}") { id name } } }` })
+.then(({ data: { tasks: { add } }, errors }) => {
+  if(!add) {
+    throw new Error(errors.map(({ message }) => message).join('\n'));
+  }
+  return add;
+});
+const updateTask = ({ id, name }) => sendGraphql({ query: `mutation { tasks { update(id: ${id}, name: "${name}") { id name } } }` })
+.then(({ data: { tasks: { update }, }, errors}) => {
+  if(!update) {
+    throw new Error(errors.map(({ message }) => message).join('\n'));
+  }
+  return update;
+});
+const deleteTask = ({ id }) => sendGraphql({ query: `mutation { tasks { delete(id: ${id}) { success } } }` })
+.then(({ data: { tasks, }, errors }) => {
+  if(!tasks.delete) {
+    throw new Error(errors.map(({ message }) => message).join('\n'));
+  }
+  return tasks.delete;
+});
 
 const addNewTaskEvent = (form) => {
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     event.target.reset();
     const name = data.get('name');
-    addTask({ name })
-      .then(({ data: { addTask: { id, name } } }) => renderTask({ id, name }));
+    await addTask({ name })
+      .then(({ add: { id, name }}) => renderTask({ id, name }));
   });
 };
 
@@ -35,9 +53,9 @@ const addUpdateTaskEvent = (container) => {
       event.target.style = '';
     }
   });
-  input.addEventListener('keypress', (event) => {
+  input.addEventListener('keypress', async  (event) => {
     if (event.key === 'Enter') {
-      updateTask({ id: event.target.dataset.id, name: event.target.value })
+      await updateTask({ id: event.target.dataset.id, name: event.target.value })
         .then(() => {
           event.target.readOnly = true;
           event.target.style = 'border:none; outline:none; background-color:inherit;';
@@ -48,8 +66,8 @@ const addUpdateTaskEvent = (container) => {
 
 const addDeleteTaskEvent = (container) => {
   const button = container.querySelector('input');
-  button.addEventListener('click', (event) => {
-    deleteTask({ id: event.target.dataset.id })
+  button.addEventListener('click', async (event) => {
+    await deleteTask({ id: event.target.dataset.id })
       .then(() => event.target.parentElement.parentElement.remove());
   });
 };
